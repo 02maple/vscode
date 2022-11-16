@@ -31,6 +31,8 @@ public:
      void setH(int h){
         m_H=h;
     }
+
+    
     //»ñÈ¡¸ß
     int getH(){
         return m_H;
