@@ -80,7 +80,6 @@ int main(){
 	
 	printf("\n后序遍历结果: \n");
 	ShowHouXu(S);				//		后序遍历二叉树
-	
     system("pause");
 	return 0;	
 } 	
