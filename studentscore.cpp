@@ -1,6 +1,6 @@
 #include <iostream>
 #include <cstdlib>
-#include <string>
+#include <string.h>
 using namespace std;
 //UTF-8
 typedef struct student{

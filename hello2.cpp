@@ -1,152 +1,133 @@
 #include <iostream>
-#include <cstdlib>
-#include <string>
 using namespace std;
 
+//继承中的对象模型
+class Base{
+public:
+    int m_A;
+protected:
+    int m_B;
+private:
+    int m_C;
+};
 
+class Son:public Base{
+public:
+    int m_D;
 
-typedef struct student{
-    double ID;
-    string name;
-    int chinese;
-    int math;
-    int english;
-    int physics;
-    double average;
-} Student;  //??????????????
+};
 
-typedef struct _node{
-    Student date;  //??????
-    struct _node *next;  //?????
-} Node;  //?????????????????????????????
-
-void input(Node* &);
-void out(Node *);
-void notpase(Node *);
-void ninety(Node *);
+void test01(){
+    cout<<"size of son="<<sizeof(Son)<<endl;
+    //16
+    //父类中所有非静态成员属性都会被子类继承下去
+    //父类中的私有成员属性 是被编译器给隐藏了 因此访问不到
+    //但是确实被继承下去了 
+}
 
 int main(){
+    test01();
 
-    Node *head=NULL,*p=NULL,*pr=NULL;
+    system("pause");
+}
 
-    while(1){
-        cout<<"**********???????????е????**********"<<endl;
-        cout<<"***     1:??????????              ***"<<endl;
-        cout<<"***     2:????????              ***"<<endl;
-        cout<<"***     3:??????????????????   ***"<<endl;
-        cout<<"***     4:???????90????????     ***"<<endl;
-        cout<<"***     5:???                      ***"<<endl;
-        cout<<"**************************************"<<endl;
-        cout<<"\n"<<endl;
 
-        
-        
-        char c,a;
-        cout <<"???????????е??????";
-        cin >>c ;
-        switch(c){
-            case '1':input(head);
-            break;
-            case '2':out(head);
-            break;
-            case '3':notpase(head);
-            break;
-            case '4':ninety(head);
-            break;
-            case '5':return 0;
-        }
-        }
 
-        system("pause");
+#include <iostream>
+using namespace std;
+
+class Base{
+public:
+    Base(){
+        cout<<"Base 构造函数"<<endl;
+    }
+
+    ~Base(){
+        cout<<"Base 析构函数"<<endl;
+    }
+};
+
+class Son:public Base{
+public:
+    Son(){
+        cout<<"Son 构造函数"<<endl;
+    }
+
+    ~Son(){
+        cout<<"Son 析构函数"<<endl;
+    }
+
+};
+
+void test01(){
+    //Base b;
+    //继承中的构造和析构顺序如下
+    //先构造父类，再构造子类，析构的顺序和构造相反
+    Son a;
+}  
+
+int main(){
+    test01();
+    system("pause");
+}
+
+
+继承同名成员处理方式
+
+访问子类中同名成员 直接访问即可
+访问父类中同名成员 需要加作用域
+
+#include <iostream>
+using namespace std;
+
+class Base{
+public:
+    Base(){
+        m_A=100;
+    }
+    void func(){
+        cout<<"Base - func()调用"<<endl;
+    }
+    void func(int a){
+        cout<<"Base - func()调用"<<endl;
+    }
+    int m_A;
     
-    return 0;
-    
-}
+};
 
-//??????????????????
-void input(Node* &head){
-    Node *p=nullptr;
-    if(!head){   //?ж??????????????????????????????????
-        head=new Node;
-        head->next=nullptr;
-        p=head;
-    }else{    //????????????????????????β???????????β?????????????
-        p= new Node;
-        p->next=nullptr;
-        Node *pre=head;
-        while(pre->next!=0){
-        pre=pre->next;
+class Son:public Base{
+public:
+    Son(){
+        m_A=200;
     }
-        pre->next=p;
+    void func(){
+        cout<<"Son - func()调用"<<endl;
     }
-        cout << "????????????";
-        cin >> p->date.ID;
-        cout << "??????????????";
-        cin >> p->date.name;
-        cout << "????????????????";
-        cin >> p->date.math;
-        cout << "????????????????";
-        cin >> p->date.chinese;
-        cout << "???????????????";
-        cin >> p->date.english;
-        cout << "?????????????????";
-        cin >> p->date.physics;
-        cout<<"\n"<<endl;
-        p->date.average=(p->date.chinese + p->date.math + p->date.physics + p->date.english)/4;
-        
-        
-        
+    int m_A;
+};
+//同名成员属性
+void test01(){
+    Son s;
+    cout<<"m_A="<<s.m_A<<endl;
+    //如果通过子类对象访问父类中的同名成员，需要加作用域
+    cout<<"Base下 m_A="<<s.Base::m_A<<endl;
+}  
 
-}
 
-//?????????????????
-void out(Node *head){
-    Node *p=head;
-    while(p!=nullptr){
-        cout <<"???????"<<p->date.ID<<"\t";
-        cout <<"?????????"<<p->date.name<<"\t";
-        cout <<"????????"<<p->date.chinese <<"\t";
-        cout <<"????????"<<p->date.math <<"\t";
-        cout <<"???????"<<p->date.english <<"\t";
-        cout <<"?????????"<<p->date.physics <<"\t";
-        p->date.average=(p->date.chinese + p->date.math + p->date.physics + p->date.english)/4;
-        cout <<"????????"<<p->date.average <<"\t";
-        cout<<"\n"<<endl;
-        p=p->next;
+//同名函数
+void test02(){
+    Son s;
+    s.func();//直接调用，调用的是子类中的同名
+    s.Base::func(); 
+
+    //如果子类中出现和父类同名的成员函数
+    //子类中的同名成员会隐藏掉父类中所有同名的成员函数
+    //错误访问父类 s.func(100);
+    s.Base::func(100);
     }
-}
 
-
-//????п????????????
-
-void notpase(Node *head){
-    Node *p=head;
-    while(p!=nullptr){   //??????????????????????????????????????????
-                         //????????????
-        while(p->date.chinese<60||p->date.math<60||
-              p->date.english<60||p->date.physics<60){
-                cout <<"  "<<p->date.name<<"  "<<"???????????"<< endl;
-                cout<<"\n"<<endl;
-                break;
-            }
-                
-        p=p->next;
-
-    }
-}
-
-
-//?????????????90?????
-void ninety(Node *head){
-    Node *p=head;    //??????????????????????????????
-    while(p!=nullptr){
-
-        while(p->date.average>90){
-            cout<<"  "<<p->date.name<<"  "<<"??????????90\n";
-            cout<<"\n"<<endl;
-            break;
-        }
-        p=p->next;
-    }
-    
+int main(){
+    //test01();
+    test02();
+    system("pause");
 }

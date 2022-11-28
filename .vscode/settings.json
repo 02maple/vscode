@@ -6,7 +6,8 @@
     "ostream": "cpp",
     "xstring": "cpp",
     "system_error": "cpp",
-    "xlocale": "cpp"
+    "xlocale": "cpp",
+    "iosfwd": "cpp"
   },
   "C_Cpp_Runner.msvcBatchPath": "",
   "C_Cpp_Runner.cCompilerPath": "gcc",

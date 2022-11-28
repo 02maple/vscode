@@ -143,8 +143,6 @@ void DEL_LIST(Lnode * &head){
     Lnode *q=p->next;
     p->next=q->next;
     delete q;
-
-    
 }
 
 
